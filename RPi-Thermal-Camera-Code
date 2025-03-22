@@ -13,24 +13,6 @@ mlx90640 = MLX90640(i2c)
 mlx90640.refresh_rate = 0.5  # 0.5 Hz (2 seconds for each frame)
 mlx90640.interleaved = True
 
-# Function to read temperature data from MLX90640
-def read_thermal_data():
-    frame = np.zeros(768)  # 32x24 grid = 768 values
-    try:
-        # Get the frame data from the sensor
-        mlx90640.get_frame(frame)
-    except Exception as e:
-        print(f"Error reading frame: {e}")
-        return None
-
-    # Check if the frame has the correct shape
-    if len(frame) != 768:
-        print(f"Error: Frame size is incorrect! Got {len(frame)} elements, expected 768.")
-        return None
-
-    # Convert to numpy array and reshape into 24x32 grid
-    return np.array(frame).reshape((24, 32))
-
 # Function to create a constant color bar for temperature visualization
 def create_colorbar():
     colorbar = np.zeros((256, 50, 3), dtype=np.uint8)
